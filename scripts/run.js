@@ -1,4 +1,8 @@
 const main = async () => {
+
+    const [owner, randomPerson] = await hre.ethers.getSigners();
+
+
     // Use the hardhat ethers plugin to create a contract object that includes
     // the contract abi. The name supplied needs to match the contract saved to
     // the contracts directory.
@@ -16,6 +20,20 @@ const main = async () => {
     // Access the contract properties
     // https://docs.ethers.io/v5/api/contract/contract/#Contract--properties
     console.log("Contract deployed to: ", waveContract.address);
+    console.log("Contract deployed by ", owner.address);
+
+    // Test contract methods
+    let waveCount;
+    waveCount = await waveContract.getTotalWaves();
+
+    let waveTxn = await waveContract.wave();
+    await waveTxn.wait();
+
+    let randomWaver = await waveContract.connect(randomPerson);
+    let randomTxn = await randomWaver.wave();
+    await randomTxn.wait();
+
+    waveCount = await waveContract.getTotalWaves();
 };
 
 const runMain = async () => {
