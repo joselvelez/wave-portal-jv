@@ -26,44 +26,54 @@ body[theme="dark"] {
 }
 
 body {
+  /* position: relative; */
   color: var(--color-4);
+  background-color: var(--color-1);
+  min-height: 100vh;
 }
 
 section {
-  background-color: var(--color-1);
-  min-height: 100vh;
   width: 100%;
-  height: 60vh;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
 .mainContainer {
-  min-width: 80%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  top: 65px;
 }
 
 .greeting {
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   padding: 20px;
-  background-color: aqua;
+  margin: 20px;
+  background-color: var(--color-2);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 10px;
 }
 
 .content {
   display: flex;
-  width: 100%;
-  padding: 20px;
   justify-content: center;
-  background-color: blueviolet;
+  flex-direction: column;
+  width: 100%;
 }
 
 .app {
   display: flex;
   justify-content: center;
+  width: 100%;
   padding: 20px;
-  background-color: chocolate;
+  margin: 20px;
+  background-color: var(--color-2);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 10px;
 }
 
 a:visited {
@@ -120,4 +130,22 @@ label::after {
   left: 5px;
   transform: translateY(-50%);
   transition: .5s ease;
+}
+
+.btnConnectWallet {
+  background: #3498db;
+  border-radius: 28px;
+  border: 0px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  text-shadow: 1px 1px 3px #666666;
+  color: #ffffff;
+  font-size: 20px;
+  width: 50%;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btnConnectWallet:hover {
+  background: #3cb0fd;
+  text-decoration: none;
 }

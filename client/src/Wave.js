@@ -1,5 +1,7 @@
 export const Wave = () => {
     return (
-        <p>this is the component!</p>
+        <>
+        <button className="btnConnectWallet">Connect your wallet to send a wave!</button>
+        </>
     );
 };
