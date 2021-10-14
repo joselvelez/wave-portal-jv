@@ -9,7 +9,7 @@ contract WavePortal {
     uint private _lastWaveAt;
     address private _lastWaver;
     uint private _maxWaves;
-    address private _maxWaver;
+    address private _topWaver;
     mapping(address => uint) private _lastWaveTimestamp;
     mapping(address => uint) private _waves;
 
@@ -45,9 +45,9 @@ contract WavePortal {
         return _maxWaves;
     }
 
-    function getMaxWaver() public view returns (address) {
-        console.log("The highest waver is currently ", _maxWaver);
-        return _maxWaver;
+    function getTopWaver() public view returns (address) {
+        console.log("The highest waver is currently ", _topWaver);
+        return _topWaver;
     }
 
     function getWaverLast() public view returns (uint) {
