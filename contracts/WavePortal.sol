@@ -10,7 +10,6 @@ contract WavePortal {
     address private _lastWaver;
     uint private _maxWaves;
     address private _topWaver;
-    mapping(address => uint) private _lastWaveTimestamp;
     mapping(address => uint) private _waves;
 
     constructor() {
@@ -21,6 +20,12 @@ contract WavePortal {
         _totalWaves += 1;
         _lastWaveAt = block.timestamp;
         _lastWaver = msg.sender;
+        _waves[msg.sender] += 1;
+
+        if (_waves[msg.sender] >= _maxWaves) {
+            _topWaver = msg.sender;
+            _maxWaves = _waves[msg.sender];
+        }
 
         console.log("Wave sent! The last person to wave was %s at block number %d.", _lastWaver, _lastWaveAt);
     }
@@ -48,11 +53,6 @@ contract WavePortal {
     function getTopWaver() public view returns (address) {
         console.log("The highest waver is currently ", _topWaver);
         return _topWaver;
-    }
-
-    function getWaverLast() public view returns (uint) {
-        console.log("You last waved at ", _lastWaveTimestamp[msg.sender]);
-        return _lastWaveTimestamp[msg.sender];
     }
 
     function getWaverWaves() public view returns (uint) {
