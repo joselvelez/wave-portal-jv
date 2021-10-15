@@ -11,12 +11,23 @@ contract WavePortal {
     uint private _maxWaves;
     address private _topWaver;
     mapping(address => uint) private _waves;
+    
+    event NewWave(address indexed from, uint timestamp, string message);
+    
+    struct Wave {
+        address waver;
+        string message;
+        uint timestamp;
+        string anotherMessage;
+    }
+
+    Wave[] waves;
 
     constructor() {
         console.log("I'm a smart contract. Look at me being super smart!");
     }
 
-    function wave() public {
+    function wave(string memory _message, string memory _anotherParam) public {
         _totalWaves += 1;
         _lastWaveAt = block.timestamp;
         _lastWaver = msg.sender;
@@ -26,6 +37,10 @@ contract WavePortal {
             _topWaver = msg.sender;
             _maxWaves = _waves[msg.sender];
         }
+
+        waves.push(Wave(msg.sender, _message, block.timestamp, _anotherParam));
+
+        emit NewWave(msg.sender, block.timestamp, _message);
 
         console.log("Wave sent! The last person to wave was %s at block number %d.", _lastWaver, _lastWaveAt);
     }
@@ -58,5 +73,9 @@ contract WavePortal {
     function getWaverWaves() public view returns (uint) {
         console.log("Your total waves are ", _waves[msg.sender]);
         return _waves[msg.sender];
+    }
+
+    function getWavesArray() public view returns (Wave[] memory) {
+        return waves;
     }
 }
