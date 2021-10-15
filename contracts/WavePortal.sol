@@ -10,7 +10,7 @@ contract WavePortal {
     address private _lastWaver;
     uint private _maxWaves;
     address private _topWaver;
-    mapping(address => uint) private _waves;
+    mapping(address => uint) private _senderWaves;
     
     event NewWave(address indexed from, uint timestamp, string message);
     
@@ -21,7 +21,7 @@ contract WavePortal {
         string anotherMessage;
     }
 
-    Wave[] waves;
+    Wave[] private _wavesArray;
 
     constructor() {
         console.log("I'm a smart contract. Look at me being super smart!");
@@ -31,14 +31,14 @@ contract WavePortal {
         _totalWaves += 1;
         _lastWaveAt = block.timestamp;
         _lastWaver = msg.sender;
-        _waves[msg.sender] += 1;
+        _senderWaves[msg.sender] += 1;
 
-        if (_waves[msg.sender] >= _maxWaves) {
+        if (_senderWaves[msg.sender] >= _maxWaves) {
             _topWaver = msg.sender;
-            _maxWaves = _waves[msg.sender];
+            _maxWaves = _senderWaves[msg.sender];
         }
 
-        waves.push(Wave(msg.sender, _message, block.timestamp, _anotherParam));
+        _wavesArray.push(Wave(msg.sender, _message, block.timestamp, _anotherParam));
 
         emit NewWave(msg.sender, block.timestamp, _message);
 
@@ -70,12 +70,12 @@ contract WavePortal {
         return _topWaver;
     }
 
-    function getWaverWaves() public view returns (uint) {
-        console.log("Your total waves are ", _waves[msg.sender]);
-        return _waves[msg.sender];
+    function getSenderWaves() public view returns (uint) {
+        console.log("Your total waves are ", _senderWaves[msg.sender]);
+        return _senderWaves[msg.sender];
     }
 
     function getWavesArray() public view returns (Wave[] memory) {
-        return waves;
+        return _wavesArray;
     }
 }
