@@ -18,7 +18,6 @@ contract WavePortal {
         address waver;
         string message;
         uint timestamp;
-        string anotherMessage;
     }
 
     Wave[] private _wavesArray;
@@ -27,7 +26,7 @@ contract WavePortal {
         console.log("I'm a smart contract. Look at me being super smart!");
     }
 
-    function wave(string memory _message, string memory _anotherParam) public {
+    function wave(string memory _message) public {
         _totalWaves += 1;
         _lastWaveAt = block.timestamp;
         _lastWaver = msg.sender;
@@ -38,7 +37,7 @@ contract WavePortal {
             _maxWaves = _senderWaves[msg.sender];
         }
 
-        _wavesArray.push(Wave(msg.sender, _message, block.timestamp, _anotherParam));
+        _wavesArray.push(Wave(msg.sender, _message, block.timestamp));
 
         emit NewWave(msg.sender, block.timestamp, _message);
 
