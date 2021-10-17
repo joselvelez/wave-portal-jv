@@ -8,7 +8,11 @@ const main = async () => {
     console.log("Account balance for deploying contract is ", accountBalance.toString());
 
     const portalContract = await hre.ethers.getContractFactory("WavePortal");
-    const portal = await portalContract.deploy();
+    const portal = await portalContract.deploy({
+        value: hre.ethers.utils.parseEther('0.001'),
+    });
+
+    await portal.deployed();
     
     console.log("WavePortal has been deployed to the blockchain.");
     console.log("Contract address: ", portal.address);

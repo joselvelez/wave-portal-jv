@@ -22,7 +22,9 @@ contract WavePortal {
 
     Wave[] private _wavesArray;
 
-    constructor() {
+    uint private _prizeAmount = 0.0001 ether;
+
+    constructor() payable {
         console.log("I'm a smart contract. Look at me being super smart!");
     }
 
@@ -31,6 +33,13 @@ contract WavePortal {
         _lastWaveAt = block.timestamp;
         _lastWaver = msg.sender;
         _senderWaves[msg.sender] += 1;
+
+        require(_prizeAmount <= address(this).balance,
+                "You are trying to withdraw more than this account has!"
+        );
+
+        (bool success, ) = (msg.sender).call{value: _prizeAmount}("");
+        require(success, "Failed to withdraw from contract");
 
         if (_senderWaves[msg.sender] >= _maxWaves) {
             _topWaver = msg.sender;
