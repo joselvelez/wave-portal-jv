@@ -5,12 +5,14 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 
 contract WavePortal {
+    uint private _seed;
     uint private _totalWaves;
     uint private _lastWaveAt;
     address private _lastWaver;
     uint private _maxWaves;
     address private _topWaver;
     mapping(address => uint) private _senderWaves;
+    mapping(address => uint) private _lastSenderWave;
     
     event NewWave(address indexed from, uint timestamp, string message);
     
@@ -26,20 +28,47 @@ contract WavePortal {
 
     constructor() payable {
         console.log("I'm a smart contract. Look at me being super smart!");
+        /*
+            Set the initial seed
+        */
+        console.log("Initializing the seed...");
+        _seed = (block.timestamp + block.difficulty) % 100;
+        console.log("Initial seed set to ", _seed);
     }
 
     function wave(string memory _message) public {
+
+        /*
+            Require user to wait at least 15 minutes for sending another wave
+        */
+        require(
+            _lastSenderWave[msg.sender] + 15 minutes < block.timestamp,
+            "Chill spammer, you need to wait 15 minutes!"
+        );
+
+        /*
+            Update last time user sent a wave
+        */
+        _lastSenderWave[msg.sender] = block.timestamp;
+
         _totalWaves += 1;
         _lastWaveAt = block.timestamp;
         _lastWaver = msg.sender;
         _senderWaves[msg.sender] += 1;
 
-        require(_prizeAmount <= address(this).balance,
-                "You are trying to withdraw more than this account has!"
+        /*
+            Set chance of user winning to 50%
+        */
+        if (_seed <= 50) {
+            console.log("%s has won a nice little prize!", msg.sender);
+
+            require(_prizeAmount <= address(this).balance,
+            "You are trying to withdraw more than this account has!"
         );
 
         (bool success, ) = (msg.sender).call{value: _prizeAmount}("");
         require(success, "Failed to withdraw from contract");
+        }
 
         if (_senderWaves[msg.sender] >= _maxWaves) {
             _topWaver = msg.sender;
@@ -48,9 +77,15 @@ contract WavePortal {
 
         _wavesArray.push(Wave(msg.sender, _message, block.timestamp));
 
+        /*
+            Generate a psuedo random number between 0 and 100
+        */
+        _seed = (block.difficulty + block.timestamp) % 100;
+        console.log("Generating seed... seed set to %s", _seed);
+
         emit NewWave(msg.sender, block.timestamp, _message);
 
-        console.log("Wave sent! The last person to wave was %s at block number %d.", _lastWaver, _lastWaveAt);
+        console.log("Wave sent! The last person to wave was %s at block number %d with seed %s", _lastWaver, _lastWaveAt, _seed);
     }
 
     function getTotalWaves() public view returns (uint) {
