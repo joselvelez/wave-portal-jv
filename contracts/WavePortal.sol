@@ -42,8 +42,8 @@ contract WavePortal {
             Require user to wait at least 15 minutes for sending another wave
         */
         require(
-            _lastSenderWave[msg.sender] + 15 minutes < block.timestamp,
-            "Chill spammer, you need to wait 15 minutes!"
+            _lastSenderWave[msg.sender] + 30 seconds < block.timestamp,
+            "Chill spammer, you need to wait at least 30 seconds!"
         );
 
         /*
