@@ -39,6 +39,12 @@ contract WavePortal {
     function wave(string memory _message) public {
 
         /*
+            Generate a psuedo random number between 0 and 100
+        */
+        _seed = (block.difficulty + block.timestamp + _seed) % 100;
+        console.log("Generating seed... seed set to %s", _seed);
+
+        /*
             Require user to wait at least 15 minutes for sending another wave
         */
         require(
@@ -76,12 +82,6 @@ contract WavePortal {
         }
 
         _wavesArray.push(Wave(msg.sender, _message, block.timestamp));
-
-        /*
-            Generate a psuedo random number between 0 and 100
-        */
-        _seed = (block.difficulty + block.timestamp) % 100;
-        console.log("Generating seed... seed set to %s", _seed);
 
         emit NewWave(msg.sender, block.timestamp, _message);
 
