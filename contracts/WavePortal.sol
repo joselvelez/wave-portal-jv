@@ -27,7 +27,7 @@ contract WavePortal {
     uint private _prizeAmount = 0.0001 ether;
 
     constructor() payable {
-        console.log("I'm a smart contract. Look at me being super smart!");
+        console.log("Creating a new contract...");
         /*
             Set the initial seed
         */
@@ -35,6 +35,11 @@ contract WavePortal {
         _seed = (block.timestamp + block.difficulty) % 100;
         console.log("Initial seed set to ", _seed);
     }
+
+    // Enable this contract to recieve ether
+    // https://docs.soliditylang.org/en/latest/contracts.html#receive-ether-function
+    receive() external payable {}
+    fallback() external payable {}
 
     function wave(string memory _message) public {
 
