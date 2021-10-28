@@ -23,7 +23,7 @@ module.exports = {
   networks: {
     rinkeby: {
       url: process.env.API_URL,
-      accounts: [process.env.KEY],
+      accounts: [process.env.MM_TEST_MAIN_PRIVATE_KEY],
     },
   },
 };
